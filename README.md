@@ -63,10 +63,22 @@ Logs: `adb logcat -s HisenseMod` (SystemUI's earliest lines at boot are dropped 
 
 | Script | What it does |
 |---|---|
-| `debloat.sh` | `pm disable-user` on Hisense/Tencent telemetry, OTA, antivirus, voice assistant, manuals; disables Tencent "traffic correction" (texts your carrier). |
-| `eink-tweaks.sh` | Animations off (every frame is an e-ink refresh); background Wi-Fi/BLE scanning off. |
+| `debloat.sh` | `pm disable-user` on Hisense/Tencent telemetry, OTA, antivirus, voice assistant, manuals and Tencent network location; disables Tencent "traffic correction" (texts your carrier). |
+| `eink-tweaks.sh` | Animations off (every frame is an e-ink refresh); background Bluetooth scanning off. |
 | `restore.sh` | Undoes both scripts. |
 | `cleanup-old-modules.sh` | Uninstalls Mello, einkify and NotificationObsrv once you're happy. |
+
+## Location fixes
+
+- **Network location:** Android picks the network-location provider with the highest version among
+  system apps. Tencent's (`com.tencent.android.location`, China-only) beat Google's, so network
+  location never worked. `debloat.sh` disables it and Google's provider takes over.
+- **Slow GPS lock:** this is a Unisoc ums512 (GNSS "marlin3lite"). Its A-GPS server is set in
+  `/vendor/etc/supl.xml` as `supl.qxwz.com`, which is unreachable, so every start was a cold start.
+  The Magisk module in `magisk/hisense-gnss-fix` points it at `supl.google.com:7275` (TLS, SUPL 2.0).
+  Install: copy the folder to `/data/adb/modules/hisense_gnss_fix`, set the `supl.xml` SELinux label to
+  `u:object_r:vendor_configs_file:s0`, reboot. Original: `docs/original/supl.xml.orig`.
+- The `optimizedgpsconf` Magisk module only replaces Qualcomm's `gps.conf`, which this chip ignores.
 
 ## Notes / findings
 

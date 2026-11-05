@@ -1,0 +1,6 @@
+id=hisense_gnss_fix
+name=Hisense GNSS fix
+version=1.0
+versionCode=1
+author=asimon
+description=A-GPS via supl.google.com instead of the unreachable supl.qxwz.com (Unisoc ums512 / Hisense A5 Pro CC)

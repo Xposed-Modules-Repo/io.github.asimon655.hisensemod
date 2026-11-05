@@ -24,11 +24,11 @@ SAFE=(
   com.hmct.instruction             # instructions app
   com.hisense.hiphone.payment      # Hisense payment
   com.hmct.dreams                  # "movie dream" screensaver
+  com.tencent.android.location     # Tencent network location: China-only, outranks Google's, so network location never works
 )
 
 # Optional: uncomment if you don't use these.
 OPTIONAL=(
-  # com.tencent.android.location   # Tencent network location (Google's fused location still works)
   # com.hmct.clock.systemwidget    # Hisense weather widget (keeps an always-alive service)
 )
 
