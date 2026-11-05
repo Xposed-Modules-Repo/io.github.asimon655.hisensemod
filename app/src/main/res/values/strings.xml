@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hisense Mod</string>
+    <string name="module_description">Hisense A5 Pro CC tweaks: SystemUI fixes (from Mello), WhatsApp/Telegram/Gmail icons on the e-ink lock screen, e-ink friendly notifications.</string>
+</resources>

@@ -1,0 +1,37 @@
+package org.asimon.hisensemod.hooks
+
+import org.asimon.hisensemod.Mod
+import org.asimon.hisensemod.Prefs
+import org.asimon.hisensemod.Prefs.on
+import org.asimon.hisensemod.findClass
+import org.asimon.hisensemod.hookBefore
+import org.asimon.hisensemod.installSafely
+import org.asimon.hisensemod.method
+
+/**
+ * com.hmct.recents: swiping an app away calls killOneTask(taskId, pkg, userId) which force-stops
+ * most apps. Packages containing "com.hmct.floatwindow" only get their task removed, so (like Mello)
+ * we disguise the package name. Packages with their own special handling are left alone.
+ */
+object RecentsHooks {
+    private val SPECIAL_CASED = listOf(
+        "com.hmct.music", "com.hmct.hsmemo", "com.caf.fmradio", "com.android.soundrecorder",
+        "com.hmct.questionnaire", "com.android.deskclock", "com.android.mms", "com.android.contacts",
+        "com.ctsi.emm", "com.hmct.health", "com.hmct.intelligent", "com.greenpoint.android.mc10086.activity",
+        "com.qualcomm.uimremoteclient", "com.redteamobile.virtual.softsim", "io.vsim.bridge",
+        "com.hmct.heduohaoclient", "com.hmct.memo", "com.android.calendar", "com.android.calculator2",
+        "com.opera.max.global", "com.hmct.einklauncher", "com.android.smspush", "com.hmct.vlw",
+        "com.zsmarter.mdm", "com.hmct.screen.record", "com.android.cts.forcestophelper", "com.hmct.floatwindow",
+    )
+
+    fun install(cl: ClassLoader) = installSafely("recents soft kill") {
+        val c = cl.findClass("com.hmct.quickstep.views.RecentsView") ?: return@installSafely
+        val m = c.method("killOneTask", Int::class.javaPrimitiveType!!, String::class.java, Int::class.javaPrimitiveType!!)
+        hookBefore(m) { chain ->
+            if (!Mod.prefs.on(Prefs.RECENTS_SOFT_KILL)) return@hookBefore null
+            val pkg = chain.getArg(1)?.toString() ?: return@hookBefore null
+            if (SPECIAL_CASED.any { pkg.contains(it) }) return@hookBefore null
+            chain.args.toTypedArray().also { it[1] = "${pkg}_act_like_com.hmct.floatwindow" }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+package org.asimon.eiknify
+
+import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.XposedBridge
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam
+import android.app.Notification
+import android.graphics.Color
+import android.os.Bundle
+import de.robv.android.xposed.XC_MethodHook
+import de.robv.android.xposed.XposedHelpers
+
+class XposedInit : IXposedHookLoadPackage {
+    override fun handleLoadPackage(lpparam: LoadPackageParam) {
+        hookMediaNotification(lpparam)
+    }
+}
+
+fun hookMediaNotification(lpparam: LoadPackageParam) {
+    XposedHelpers.findAndHookMethod(
+        Notification.Builder::class.java,
+        "build",
+        object : XC_MethodHook() {
+            override fun beforeHookedMethod(param: MethodHookParam) {
+                // Get the builder object instance currently running
+                val builder = param.thisObject as Notification.Builder
+
+                try {
+                    // 1. Force the Builder to use a light color style
+                    builder.setColorized(false) // Disables background tints from artwork
+
+                    builder.setColor(Color.WHITE) // Forces baseline elements to respect a white backdrop
+
+                    // 2. Clear out underlying color extras before the layout compiles
+                    val extrasField = XposedHelpers.findField(Notification.Builder::class.java, "mExtras")
+                    val extras = extrasField.get(builder) as? Bundle
+
+                    extras?.let {
+                        it.putBoolean(Notification.EXTRA_COLORIZED, false)
+                        it.remove("android.text.background")
+                    }
+
+                } catch (e: NoSuchFieldError) {
+
+                } catch (e: Throwable) {
+                    XposedBridge.log("EInkMod Error: Failed to alter builder: ${e.message}")
+                }
+            }
+        }
+    )
+}

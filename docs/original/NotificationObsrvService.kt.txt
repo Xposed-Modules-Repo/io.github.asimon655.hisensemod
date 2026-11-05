@@ -1,0 +1,59 @@
+package org.asimon.notificationobsrv
+
+import android.provider.Settings
+import android.service.notification.NotificationListenerService
+import android.service.notification.StatusBarNotification
+import android.widget.Toast
+
+class NotificationObsrvService : NotificationListenerService() {
+    private val SETTING_NAME = "my_app_notify"
+    private val TARGET_PKG = "com.whatsapp"
+    private val CMD_ON = "su -c settings put system $SETTING_NAME $TARGET_PKG"
+    private val CMD_OFF = "su -c settings delete system $SETTING_NAME"
+
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        Toast.makeText(applicationContext, "NotificationObsrv Is On", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onNotificationPosted(sbn: StatusBarNotification) {
+        if (sbn.packageName == TARGET_PKG &&
+            sbn.notification.channelId != "other_notifications" &&
+            sbn.notification.channelId != "failure_notifications" &&
+            sbn.notification.channelId != "silent_notifications") {
+            updateSettings()
+        }
+    }
+
+    override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        if (sbn.packageName == TARGET_PKG) {
+            updateSettings()
+        }
+    }
+
+    private fun updateSettings() {
+        // Count active notifications for your target package
+        var notificationExists = false
+        for (sbn in activeNotifications) {
+            if (sbn.packageName == TARGET_PKG) {
+                notificationExists = true
+                break
+            }
+        }
+
+        val currentState = Settings.System.getString(applicationContext.contentResolver, SETTING_NAME)
+        if (notificationExists && currentState == TARGET_PKG) return
+        if (!notificationExists && currentState == null) return
+
+        // Run 'settings put'
+        try {
+            if (notificationExists) {
+                Runtime.getRuntime().exec(CMD_ON).waitFor()
+            } else {
+                Runtime.getRuntime().exec(CMD_OFF).waitFor()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
