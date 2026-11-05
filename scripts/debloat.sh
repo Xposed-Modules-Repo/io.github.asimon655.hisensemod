@@ -32,7 +32,7 @@ OPTIONAL=(
   # com.hmct.clock.systemwidget    # Hisense weather widget (keeps an always-alive service)
 )
 
-for p in "${SAFE[@]}" "${OPTIONAL[@]}"; do
+for p in "${SAFE[@]}" ${OPTIONAL[@]+"${OPTIONAL[@]}"}; do
   [ -z "$p" ] && continue
   printf '%-34s ' "$p"
   adb shell pm disable-user --user 0 "$p" 2>&1 | tail -1
