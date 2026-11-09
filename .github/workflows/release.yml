@@ -11,6 +11,8 @@ permissions:
 
 jobs:
   release:
+    # Signing secrets only exist in the main repo (not the Xposed-Modules-Repo mirror).
+    if: github.repository == 'asimon655/hisense-mod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
