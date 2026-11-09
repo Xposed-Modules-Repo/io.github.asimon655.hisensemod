@@ -10,6 +10,7 @@ import io.github.libxposed.api.XposedModuleInterface.SystemServerStartingParam
 import org.asimon.hisensemod.hooks.EinkNotificationHooks
 import org.asimon.hisensemod.hooks.LauncherHooks
 import org.asimon.hisensemod.hooks.LockscreenNotifications
+import org.asimon.hisensemod.hooks.MediaLockScreen
 import org.asimon.hisensemod.hooks.MemoHooks
 import org.asimon.hisensemod.hooks.NetworkControlHooks
 import org.asimon.hisensemod.hooks.PowerManagerHooks
@@ -46,6 +47,7 @@ class ModuleMain : XposedModule() {
             "com.android.systemui" -> {
                 SystemUiHooks.install(cl)
                 LockscreenNotifications.install(cl)
+                MediaLockScreen.install(cl)
             }
             "com.hmct.recents" -> RecentsHooks.install(cl)
             "com.hmct.vision" -> LauncherHooks.install(cl)

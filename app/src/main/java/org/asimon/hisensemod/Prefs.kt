@@ -54,6 +54,17 @@ object Prefs {
         "Write the number of missed calls and unread SMS under their icons.", "com.android.systemui"
     )
 
+    val LOCK_NOW_PLAYING = Toggle(
+        "lock_now_playing", false, "Now playing on lock screen",
+        "Show the playing song's cover and name in the middle of the e-ink lock screen. Redraws only when the song changes.",
+        "com.android.systemui"
+    )
+
+    val LOCK_NOW_PLAYING_COVER = Toggle(
+        "lock_now_playing_cover", true, "Show album cover",
+        "Off: only the song and artist name are shown.", "com.android.systemui"
+    )
+
     // Other system apps
     val RECENTS_SOFT_KILL = Toggle(
         "recents_soft_kill", true, "Swiping a recent app doesn't force-stop it",
@@ -85,7 +96,7 @@ object Prefs {
 
     val ALL_TOGGLES = listOf(
         STATUSBAR_ALL_ICONS, STATUSBAR_MONO_ICONS, DEEP_CLEAN_SAFE, PROTECT_WATCHED_APPS, DISABLE_STEP_COUNTER,
-        LOCK_APP_ICONS, LOCK_SHOW_COUNTS, LOCK_GRAY_ICONS, LOCK_CALL_SMS_COUNTS,
+        LOCK_APP_ICONS, LOCK_SHOW_COUNTS, LOCK_GRAY_ICONS, LOCK_CALL_SMS_COUNTS, LOCK_NOW_PLAYING, LOCK_NOW_PLAYING_COVER,
         RECENTS_SOFT_KILL, LAUNCHER_FIXES, MEMO_FIX, NETCTL_NO_FIREWALL, POWER_RESTORE_TOGGLES,
         EINK_NOTIFICATIONS,
     )

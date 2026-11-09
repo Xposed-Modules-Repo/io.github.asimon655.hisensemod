@@ -80,7 +80,7 @@ class MainActivity : Activity() {
         }
 
         section("Lock screen")
-        toggles(prefs, "com.android.systemui", Prefs.LOCK_APP_ICONS, Prefs.LOCK_SHOW_COUNTS, Prefs.LOCK_GRAY_ICONS, Prefs.LOCK_CALL_SMS_COUNTS)
+        toggles(prefs, "com.android.systemui", Prefs.LOCK_APP_ICONS, Prefs.LOCK_SHOW_COUNTS, Prefs.LOCK_GRAY_ICONS, Prefs.LOCK_CALL_SMS_COUNTS, Prefs.LOCK_NOW_PLAYING, Prefs.LOCK_NOW_PLAYING_COVER)
         val watched = listEditor(
             "Apps with lock screen icons (one package per line, in display order)",
             prefs.getString(Prefs.LOCK_WATCHED_APPS, null) ?: Prefs.DEFAULT_WATCHED_APPS.joinToString("\n")

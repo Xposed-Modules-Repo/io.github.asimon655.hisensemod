@@ -5,11 +5,12 @@ import android.content.Context
 import android.database.ContentObserver
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
@@ -19,6 +20,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.asimon.hisensemod.Mod
@@ -58,9 +60,12 @@ object LockscreenNotifications {
     private val controllers: MutableSet<Any> = Collections.synchronizedSet(Collections.newSetFromMap(WeakHashMap()))
     @Volatile
     private var listener: WeakReference<Any> = WeakReference(null)
-    private val iconCache = HashMap<String, Drawable>()
+    private val iconCache = HashMap<String, Bitmap>()
     private val main = Handler(Looper.getMainLooper())
     private val refresh = Runnable { refreshAll() }
+
+    /** Ask the e-ink lock screen to redraw (it only does so while the screen is off). */
+    fun requestRedraw() { main.post { scheduleRefresh() } }
 
     fun install(cl: ClassLoader) {
         val c = cl.findClass(CONTROLLER) ?: return
@@ -161,21 +166,56 @@ object LockscreenNotifications {
 
         for ((pkg, count) in counts) {
             val icon = appIcon(ctx, pkg, sizePx, gray) ?: continue
-            val tv = TextView(ctx).apply {
+            val iv = ImageView(ctx).apply {
                 tag = VIEW_TAG
-                gravity = Gravity.CENTER
-                setCompoundDrawables(null, icon, null, null)
-                compoundDrawablePadding = dp(ctx, 2)
-                text = if (showCounts) count.toString() else ""
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 10f)
-                textColor?.let { setTextColor(it) }
+                setImageBitmap(withBadge(ctx, icon, if (showCounts) count else 0))
             }
             val lp = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             template?.let { lp.setMargins(it.leftMargin, it.topMargin, it.rightMargin, it.bottomMargin) }
             if (lp.leftMargin == 0 && lp.rightMargin == 0) lp.setMargins(dp(ctx, 8), 0, dp(ctx, 8), 0)
             lp.gravity = Gravity.CENTER_VERTICAL
-            container.addView(tv, lp)
+            container.addView(iv, lp)
         }
+    }
+
+    /**
+     * Icon with an iPhone-style count badge over its bottom-left corner. The badge pokes out a
+     * little past the icon, so the bitmap gets a small margin on the left and bottom for it; the
+     * icon itself keeps its full size.
+     */
+    private fun withBadge(ctx: Context, icon: Bitmap, count: Int): Bitmap {
+        if (count <= 0) return icon
+        val size = icon.width
+        val d = maxOf(size * 0.5f, dp(ctx, 14).toFloat())    // badge height
+        val stroke = maxOf(1f, d * 0.1f)
+        val overhang = d * 0.3f                                  // how far it sticks out past the icon
+        val label = if (count > 99) "99+" else count.toString()
+
+        val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = d * 0.62f
+            typeface = Typeface.DEFAULT_BOLD
+            textAlign = Paint.Align.CENTER
+        }
+        val w = maxOf(d, textPaint.measureText(label) + d * 0.5f)  // pill for 2+ digits
+
+        val pad = overhang.toInt() + 1
+        val extraRight = maxOf(0, (w - overhang - size).toInt() + 1)
+        val out = Bitmap.createBitmap(size + pad + extraRight, size + pad, Bitmap.Config.ARGB_8888)
+        val c = Canvas(out)
+        c.drawBitmap(icon, pad.toFloat(), 0f, null)
+
+        val left = pad - overhang
+        val top = size + pad - d
+        val rect = RectF(left, top, left + w, top + d)
+        val r = d / 2f
+        // White ring keeps the badge readable on top of a dark icon.
+        c.drawRoundRect(rect, r, r, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE })
+        rect.inset(stroke, stroke)
+        c.drawRoundRect(rect, r - stroke, r - stroke, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.BLACK })
+        val baseline = rect.centerY() - (textPaint.descent() + textPaint.ascent()) / 2f
+        c.drawText(label, rect.centerX(), baseline, textPaint)
+        return out
     }
 
     /** Per watched package: number of conversations/emails (non-summary notifications). */
@@ -203,7 +243,7 @@ object LockscreenNotifications {
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 9f)
     }
 
-    private fun appIcon(ctx: Context, pkg: String, sizePx: Int, gray: Boolean): Drawable? {
+    private fun appIcon(ctx: Context, pkg: String, sizePx: Int, gray: Boolean): Bitmap? {
         val key = "$pkg/$sizePx/$gray"
         iconCache[key]?.let { return it }
         val src = runCatching { ctx.packageManager.getApplicationIcon(pkg) }.getOrNull() ?: return null
@@ -219,11 +259,10 @@ object LockscreenNotifications {
         } else {
             src.draw(canvas)
         }
-        return BitmapDrawable(ctx.resources, bmp).apply { setBounds(0, 0, sizePx, sizePx) }
-            .also { iconCache[key] = it }
+        return bmp.also { iconCache[key] = it }
     }
 
-    private fun einkMatrix(): ColorMatrix {
+    fun einkMatrix(): ColorMatrix {
         val m = ColorMatrix().apply { setSaturation(0f) }
         val contrast = 1.35f
         val shift = (-0.5f * contrast + 0.5f) * 255f
