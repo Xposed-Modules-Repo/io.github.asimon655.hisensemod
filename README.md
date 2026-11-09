@@ -7,7 +7,7 @@ It merges three earlier projects:
 
 | Old project | What happened to it |
 |---|---|
-| **MelloSystemUI** v4.3 (closed source, from XDA) | Reverse-engineered (`docs/original/HisenseFixes-4.3.decompiled.java`) and ported hook by hook, each one now behind a switch. |
+| **MelloSystemUI** v4.3 (closed source, from XDA) | Reverse-engineered and ported hook by hook, each one now behind a switch. |
 | **einkify** | Moved from a per-app `Notification.Builder.build()` hook into **system_server**, so it now covers every app without adding each one to the scope. The per-app hook still runs for any extra app you add to the scope. |
 | **NotificationObsrv** | Replaced. It used a notification listener plus `su -c settings put system my_app_notify ...`, which caused the Magisk toast. Now SystemUI's own notification listener is read in-process and the icons are drawn straight into the lock screen row. No root shell, no extra app, no notification-access or autorun permissions. |
 
