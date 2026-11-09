@@ -1,15 +1,15 @@
-package org.asimon.hisensemod.hooks
+package io.github.asimon655.hisensemod.hooks
 
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import org.asimon.hisensemod.Prefs
-import org.asimon.hisensemod.Mod
-import org.asimon.hisensemod.Prefs.on
-import org.asimon.hisensemod.findClass
-import org.asimon.hisensemod.hookAfter
-import org.asimon.hisensemod.installSafely
-import org.asimon.hisensemod.method
+import io.github.asimon655.hisensemod.Prefs
+import io.github.asimon655.hisensemod.Mod
+import io.github.asimon655.hisensemod.Prefs.on
+import io.github.asimon655.hisensemod.findClass
+import io.github.asimon655.hisensemod.hookAfter
+import io.github.asimon655.hisensemod.installSafely
+import io.github.asimon655.hisensemod.method
 
 /** com.hmct.hsmemo: toggle the view type once when the memo list opens (Mello behaviour). */
 object MemoHooks {

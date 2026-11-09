@@ -1,4 +1,4 @@
-package org.asimon.hisensemod
+package io.github.asimon655.hisensemod
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -7,15 +7,15 @@ import io.github.libxposed.api.XposedModuleInterface.HotReloadedParam
 import io.github.libxposed.api.XposedModuleInterface.HotReloadingParam
 import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam
 import io.github.libxposed.api.XposedModuleInterface.SystemServerStartingParam
-import org.asimon.hisensemod.hooks.EinkNotificationHooks
-import org.asimon.hisensemod.hooks.LauncherHooks
-import org.asimon.hisensemod.hooks.LockscreenNotifications
-import org.asimon.hisensemod.hooks.MediaLockScreen
-import org.asimon.hisensemod.hooks.MemoHooks
-import org.asimon.hisensemod.hooks.NetworkControlHooks
-import org.asimon.hisensemod.hooks.PowerManagerHooks
-import org.asimon.hisensemod.hooks.RecentsHooks
-import org.asimon.hisensemod.hooks.SystemUiHooks
+import io.github.asimon655.hisensemod.hooks.EinkNotificationHooks
+import io.github.asimon655.hisensemod.hooks.LauncherHooks
+import io.github.asimon655.hisensemod.hooks.LockscreenNotifications
+import io.github.asimon655.hisensemod.hooks.MediaLockScreen
+import io.github.asimon655.hisensemod.hooks.MemoHooks
+import io.github.asimon655.hisensemod.hooks.NetworkControlHooks
+import io.github.asimon655.hisensemod.hooks.PowerManagerHooks
+import io.github.asimon655.hisensemod.hooks.RecentsHooks
+import io.github.asimon655.hisensemod.hooks.SystemUiHooks
 
 /**
  * Entry point (listed in META-INF/xposed/java_init.list).

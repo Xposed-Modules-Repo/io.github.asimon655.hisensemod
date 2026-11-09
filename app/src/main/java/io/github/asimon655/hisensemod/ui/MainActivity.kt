@@ -1,4 +1,4 @@
-package org.asimon.hisensemod.ui
+package io.github.asimon655.hisensemod.ui
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -18,7 +18,7 @@ import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import io.github.libxposed.service.XposedService
-import org.asimon.hisensemod.Prefs
+import io.github.asimon655.hisensemod.Prefs
 
 /**
  * Plain, high-contrast settings screen (no animations, no colour) that suits the e-ink display.

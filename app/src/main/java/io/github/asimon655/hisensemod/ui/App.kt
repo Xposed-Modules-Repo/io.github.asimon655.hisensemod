@@ -1,4 +1,4 @@
-package org.asimon.hisensemod.ui
+package io.github.asimon655.hisensemod.ui
 
 import android.app.Application
 import io.github.libxposed.service.XposedService

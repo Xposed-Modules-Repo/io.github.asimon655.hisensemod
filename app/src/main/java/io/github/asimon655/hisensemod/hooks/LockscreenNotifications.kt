@@ -1,4 +1,4 @@
-package org.asimon.hisensemod.hooks
+package io.github.asimon655.hisensemod.hooks
 
 import android.app.Notification
 import android.content.Context
@@ -23,17 +23,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import org.asimon.hisensemod.Mod
-import org.asimon.hisensemod.Prefs
-import org.asimon.hisensemod.Prefs.int
-import org.asimon.hisensemod.Prefs.list
-import org.asimon.hisensemod.Prefs.on
-import org.asimon.hisensemod.field
-import org.asimon.hisensemod.findClass
-import org.asimon.hisensemod.hookAfter
-import org.asimon.hisensemod.installSafely
-import org.asimon.hisensemod.method
-import org.asimon.hisensemod.methodsNamed
+import io.github.asimon655.hisensemod.Mod
+import io.github.asimon655.hisensemod.Prefs
+import io.github.asimon655.hisensemod.Prefs.int
+import io.github.asimon655.hisensemod.Prefs.list
+import io.github.asimon655.hisensemod.Prefs.on
+import io.github.asimon655.hisensemod.field
+import io.github.asimon655.hisensemod.findClass
+import io.github.asimon655.hisensemod.hookAfter
+import io.github.asimon655.hisensemod.installSafely
+import io.github.asimon655.hisensemod.method
+import io.github.asimon655.hisensemod.methodsNamed
 import java.lang.ref.WeakReference
 import java.util.Collections
 import java.util.WeakHashMap

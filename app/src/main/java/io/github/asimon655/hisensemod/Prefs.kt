@@ -1,4 +1,4 @@
-package org.asimon.hisensemod
+package io.github.asimon655.hisensemod
 
 import android.content.SharedPreferences
 

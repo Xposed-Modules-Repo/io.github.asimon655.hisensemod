@@ -1,4 +1,4 @@
-package org.asimon.hisensemod.hooks
+package io.github.asimon655.hisensemod.hooks
 
 import android.app.ActivityManager
 import android.graphics.drawable.Icon
@@ -7,19 +7,19 @@ import android.hardware.SensorManager
 import android.os.Process
 import android.service.notification.StatusBarNotification
 import android.view.View
-import org.asimon.hisensemod.CallOriginal
-import org.asimon.hisensemod.Mod
-import org.asimon.hisensemod.Prefs
-import org.asimon.hisensemod.Prefs.list
-import org.asimon.hisensemod.Prefs.on
-import org.asimon.hisensemod.currentApplication
-import org.asimon.hisensemod.field
-import org.asimon.hisensemod.findClass
-import org.asimon.hisensemod.hookAfter
-import org.asimon.hisensemod.hookReplace
-import org.asimon.hisensemod.installSafely
-import org.asimon.hisensemod.method
-import org.asimon.hisensemod.setField
+import io.github.asimon655.hisensemod.CallOriginal
+import io.github.asimon655.hisensemod.Mod
+import io.github.asimon655.hisensemod.Prefs
+import io.github.asimon655.hisensemod.Prefs.list
+import io.github.asimon655.hisensemod.Prefs.on
+import io.github.asimon655.hisensemod.currentApplication
+import io.github.asimon655.hisensemod.field
+import io.github.asimon655.hisensemod.findClass
+import io.github.asimon655.hisensemod.hookAfter
+import io.github.asimon655.hisensemod.hookReplace
+import io.github.asimon655.hisensemod.installSafely
+import io.github.asimon655.hisensemod.method
+import io.github.asimon655.hisensemod.setField
 
 /** Status bar and task manager tweaks inside com.android.systemui (ported from Mello). */
 object SystemUiHooks {

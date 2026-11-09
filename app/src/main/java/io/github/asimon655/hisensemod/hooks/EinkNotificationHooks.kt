@@ -1,15 +1,15 @@
-package org.asimon.hisensemod.hooks
+package io.github.asimon655.hisensemod.hooks
 
 import android.app.Notification
 import android.graphics.Color
-import org.asimon.hisensemod.Mod
-import org.asimon.hisensemod.Prefs
-import org.asimon.hisensemod.Prefs.list
-import org.asimon.hisensemod.Prefs.on
-import org.asimon.hisensemod.findClass
-import org.asimon.hisensemod.hookBefore
-import org.asimon.hisensemod.installSafely
-import org.asimon.hisensemod.methodsNamed
+import io.github.asimon655.hisensemod.Mod
+import io.github.asimon655.hisensemod.Prefs
+import io.github.asimon655.hisensemod.Prefs.list
+import io.github.asimon655.hisensemod.Prefs.on
+import io.github.asimon655.hisensemod.findClass
+import io.github.asimon655.hisensemod.hookBefore
+import io.github.asimon655.hisensemod.installSafely
+import io.github.asimon655.hisensemod.methodsNamed
 
 /**
  * E-ink friendly notifications (formerly the "einkify" module).

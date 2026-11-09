@@ -53,8 +53,8 @@ Or from a computer with Vector's CLI:
 
 ```sh
 C=/data/adb/lspd/cli
-adb shell su -c "'$C modules enable org.asimon.hisensemod'"
-adb shell su -c "'$C scope set org.asimon.hisensemod system/0 com.android.systemui/0 com.hmct.recents/0 com.hmct.vision/0 com.hmct.hsmemo/0 com.android.networkcontrol/0 com.android.powermanager/0'"
+adb shell su -c "'$C modules enable io.github.asimon655.hisensemod'"
+adb shell su -c "'$C scope set io.github.asimon655.hisensemod system/0 com.android.systemui/0 com.hmct.recents/0 com.hmct.vision/0 com.hmct.hsmemo/0 com.android.networkcontrol/0 com.android.powermanager/0'"
 adb reboot
 ```
 

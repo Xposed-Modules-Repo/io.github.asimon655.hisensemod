@@ -12,11 +12,11 @@ fun signingValue(prop: String, env: String): String? = keystoreProps.getProperty
 val releaseStoreFile = signingValue("storeFile", "RELEASE_STORE_FILE")
 
 android {
-    namespace = "org.asimon.hisensemod"
+    namespace = "io.github.asimon655.hisensemod"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "org.asimon.hisensemod"
+        applicationId = "io.github.asimon655.hisensemod"
         minSdk = 29 // Hisense A5 Pro CC runs Android 10
         targetSdk = 36
         // CI passes these from the release tag (v1.2.3 -> versionName 1.2.3).
